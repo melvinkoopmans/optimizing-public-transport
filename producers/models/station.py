@@ -2,8 +2,6 @@
 import logging
 from pathlib import Path
 
-import pdb
-
 from confluent_kafka import avro
 
 from models import Turnstile

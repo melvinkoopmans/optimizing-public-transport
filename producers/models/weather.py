@@ -6,7 +6,6 @@ from pathlib import Path
 import random
 import urllib.parse
 
-import pdb
 import requests
 
 from confluent_kafka import avro
