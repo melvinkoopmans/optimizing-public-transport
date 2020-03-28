@@ -2,7 +2,6 @@
 import logging
 import time
 
-
 from confluent_kafka import avro
 from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka.avro import AvroProducer
@@ -31,6 +30,10 @@ class Producer:
         self.num_partitions = num_partitions
         self.num_replicas = num_replicas
 
+        self.admin_client = AdminClient({
+            'bootstrap.servers': 'PLAINTEXT://localhost:9092'
+        })
+
         #
         #
         # TODO: Configure the broker properties below. Make sure to reference the project README
@@ -43,7 +46,6 @@ class Producer:
             # TODO
         }
 
-        print(Producer.existing_topics)
         # If the topic does not already exist, try to create it
         if self.topic_name not in Producer.existing_topics:
             self.create_topic()
@@ -64,7 +66,20 @@ class Producer:
         # the Kafka Broker.
         #
         #
-        logger.info("topic creation kafka integration incomplete - skipping")
+        topics_list = self.admin_client.list_topics().topics.keys()
+
+        if self.topic_name in topics_list:
+            logger.debug(f"Topic \"{self.topic_name}\" already exists on the Kafka broker")
+            return
+
+        topic = NewTopic(
+            self.topic_name,
+            num_partitions=self.num_partitions,
+            replication_factor=self.num_replicas
+        )
+        self.admin_client.create_topics([topic])
+
+        logger.debug(f"Create topic \"{self.topic_name}\" on the Kafka broker")
 
     def time_millis(self):
         return int(round(time.time() * 1000))

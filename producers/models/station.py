@@ -2,6 +2,8 @@
 import logging
 from pathlib import Path
 
+import pdb
+
 from confluent_kafka import avro
 
 from models import Turnstile
@@ -62,23 +64,17 @@ class Station(Producer):
         # TODO: Complete this function by producing an arrival message to Kafka
         #
         #
-        logger.info("arrival kafka integration incomplete - skipping")
         self.producer.produce(
            topic=self.topic_name,
            key={"timestamp": self.time_millis()},
            value={
                "station_id": self.station_id,
-               "train_id": train,
+               "train_id": train.train_id,
                "direction": direction,
-               "line": self.line,
-
-                {"name": "station_id", "type": "string"},
-                {"name": "train_id", "type": "string"},
-                {"name": "direction", "type": "string"},
-                {"name": "line", "type": "string"},
-                {"name": "train_status", "type": "string"},
-                {"name": "prev_station_id", "type": "string"},
-                {"name": "prev_direction", "type": "string"}
+               "line": self.color.name,
+               "train_status": train.status.name,
+               "prev_station_id": prev_station_id,
+               "prev_direction": prev_direction,
            },
         )
 
