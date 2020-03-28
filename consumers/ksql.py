@@ -23,14 +23,17 @@ KSQL_URL = "http://localhost:8088"
 
 KSQL_STATEMENT = """
 CREATE TABLE turnstile (
-    ???
+    station_id INTEGER, station_name VARCHAR, line VARCHAR
 ) WITH (
-    ???
+    VALUE_FORMAT='AVRO',
+    KAFKA_TOPIC='org.chicago.cta.turnstile',
+    KEY='station_id'
 );
 
 CREATE TABLE turnstile_summary
-WITH (???) AS
-    ???
+WITH (VALUE_FORMAT='JSON') AS 
+SELECT station_id, COUNT(station_id) as count FROM turnstile 
+GROUP BY station_id;
 """
 
 
@@ -52,6 +55,7 @@ def execute_statement():
         ),
     )
 
+    print(resp.json())
     # Ensure that a 2XX status code was returned
     resp.raise_for_status()
 
