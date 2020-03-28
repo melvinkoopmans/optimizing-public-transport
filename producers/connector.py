@@ -45,7 +45,7 @@ def configure_connector():
                "table.whitelist": "stations",
                "mode": "incrementing",
                "incrementing.column.name": "stop_id",
-               "topic.prefix": "postgres-",
+               "topic.prefix": "org.chicago.cta.postgres.",
                "poll.interval.ms": 3_600_000, # every hour
            }
        }),
