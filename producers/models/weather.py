@@ -38,7 +38,7 @@ class Weather(Producer):
         #
         #
         super().__init__(
-            "org.chicago.cta.weather",
+            "org.chicago.cta.weather.v1",
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
         )
