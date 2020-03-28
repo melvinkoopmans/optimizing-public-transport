@@ -55,7 +55,6 @@ def execute_statement():
         ),
     )
 
-    print(resp.json())
     # Ensure that a 2XX status code was returned
     resp.raise_for_status()
 

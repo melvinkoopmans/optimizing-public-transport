@@ -44,7 +44,6 @@ class KafkaConsumer:
         if self.offset_earliest:
             self.broker_properties['auto.offset.reset'] = 'earliest'
 
-
         # TODO: Create the Consumer, using the appropriate type.
         if is_avro is True:
             self.broker_properties["schema.registry.url"] = "http://localhost:8081"
@@ -64,7 +63,7 @@ class KafkaConsumer:
         """Callback for when topic assignment takes place"""
         # TODO: If the topic is configured to use `offset_earliest` set the partition offset to
         # the beginning or earliest
-        if self.offset_earliest:
+        if not self.offset_earliest:
             return
 
         # logger.info("on_assign is incomplete - skipping")
